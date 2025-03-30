@@ -75,12 +75,12 @@ If you find this work helpful, please kindly cite our paper:
 }
 ```
 
-Our collection of PRMs [Awesome-Process-Reward-Models](https://github.com/RyanLiu112/Awesome-Process-Reward-Models):
+You can also check out our collection of PRMs in [Awesome-Process-Reward-Models](https://github.com/RyanLiu112/Awesome-Process-Reward-Models):
 
 ```bibtex
 @misc{Awesome-Process-Reward-Models,
     title   = {Awesome Process Reward Models},
-    author  = {Runze Liu and Jian Zhao and Kaiyan Zhang and Junqi Gao and Xiu Li and Biqing Qi and Wanli Ouyang and Bowen Zhou},
+    author  = {Runze Liu and Jian Zhao and Kaiyan Zhang and Zhimu Zhou and Junqi Gao and Dong Li and Jiafei Lyu and Zhouyi Qian and Biqing Qi and Xiu Li and Bowen Zhou},
     url     = {https://github.com/RyanLiu112/Awesome-Process-Reward-Models},
     note    = {GitHub Repository},
     year    = {2025}
@@ -100,5 +100,6 @@ Our recent work on LLM test-time scaling with PRMs on mathematical tasks:
 
 ## 💡 Acknowledgement
 
-Our code is largely based on [OpenR](https://github.com/openreasoner/openr), an awesome LLM reasoning repository, and their work has been instrumental in our study. Our mathematical expression evaluation code is based on [Qwen2.5-Math](https://github.com/QwenLM/Qwen2.5-Math). We also want to thank the community for providing high-quality open-source PRMs, including [Qwen2.5-Math](https://huggingface.co/collections/Qwen/qwen25-math-66eaa240a1b7d5ee65f1da3e), [Skywork-o1](https://huggingface.co/collections/Skywork/skywork-o1-open-67453df58e12f6c3934738d0), [RLHFlow](https://huggingface.co/collections/RLHFlow/rlhflow-math-process-reward-model-6725a42fc8808e12aa1cb144), and [Math-Shepherd](https://huggingface.co/peiyi9979/math-shepherd-mistral-7b-prm).
+GenPRM training is based on [axolotl](https://github.com/axolotl-ai-cloud/axolotl) and [RLHFlow](https://github.com/RLHFlow/RLHF-Reward-Modeling/tree/main/math-rm). The evaluation code is based on [Qwen2.5-Math](https://github.com/QwenLM/Qwen2.5-Math).
+
 
