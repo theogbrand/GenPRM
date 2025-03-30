@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="GenPRM: Scaling Test-Time Compute of Process Reward Models via Generative Reasoning.">
+  <meta name="keywords" content="Large Language Model, Test-Time Scaling, Process Reward Model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GenPRM: Scaling Test-Time Compute of Process Reward Models via Generative Reasoning</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+
+          <!-- Title -->
+          <h1 class="title is-1 publication-title is-bold">
+            GenPRM: Scaling Test-Time Compute of Process Reward Models via Generative Reasoning
+          </h1>
+
+          <!-- Author list -->
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://openreview.net/profile?id=~Jian_Zhao12">Jian Zhao</a><sup>1,3*</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://ryanliu112.github.io">Runze Liu</a><sup>1,2*</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://iseesaw.github.io">Kaiyan Zhang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://openreview.net/profile?id=~Zhimu_Zhou2">Zhimu Zhou</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=mWpsZ1wAAAAJ">Junqi Gao</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com.hk/citations?user=sSOt_McAAAAJ">Dong Li</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://dmksjfl.github.io">Jiafei Lyu</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://github.com/qianzhouyi2">Zhouyi Qian</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://biqing-qi.github.io">Biqing Qi</a><sup>2†</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.sigs.tsinghua.edu.cn/lx/main.htm">Xiu Li</a><sup>1†</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://c3i.ee.tsinghua.edu.cn">Bowen Zhou</a><sup>1,2†</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors" style="margin-top: 0.3em;">
+            <div class="author-block"><sup>1</sup>Tsinghua University, </div>
+            <div class="author-block"><sup>2</sup>Shanghai AI Laboratory, </div>
+            <div class="author-block"><sup>3</sup>Beijing University of Posts and Telecommunications, </div>
+            <div class="author-block"><sup>4</sup>Harbin Institute of Technology</div>
+          </div>
+
+          <div class="is-size-6 has-text-centered">
+            <!-- <p>*</p> -->
+            <div>†Corresponding author</div>
+          </div>
+
+          <!-- <div class="is-size-5 publication-authors" style="margin-top: 1em; color: orange;">
+            <div>Ranked <strong style="color: darkorange;">#1</strong> on HuggingFace Daily Papers</div>
+          </div> -->
+
+          <!-- Links -->
+          <div class="column has-text-centered" style="margin-top: 1em;">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2503.xxxxx" class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2503.xxxxx" class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://github.com/RyanLiu112/GenPRM" class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2503.xxxxx" class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                    <p style="font-size:14px">🤗</p>
+                  </span>
+                  <span>HuggingFace</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://github.com/RyanLiu112/Awesome-Process-Reward-Models" class="external-link button is-normal is-rounded is-dark" target="_blank">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Awesome Process Reward Models</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+TBD
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title">BibTeX</h2>
+    </div>
+    <pre><code>@article{zhao2025genprm,
+  title   = {GenPRM: Scaling Test-Time Compute of Process Reward Models via Generative Reasoning},
+  author  = {Jian Zhao and Runze Liu and Kaiyan Zhang and Zhimu Zhou and Junqi Gao and Dong Li and Jiafei Lyu and Zhouyi Qian and Biqing Qi and Xiu Li and Bowen Zhou},
+  journal = {arXiv preprint arXiv:2503.xxxxx},
+  year    = {2025}
+}</code></pre>
+    Our previous work on LLM Test-Time Scaling:
+    <pre><code>@article{liu2025can,
+  title   = {Can 1B LLM Surpass 405B LLM? Rethinking Compute-Optimal Test-Time Scaling},
+  author  = {Runze Liu and Junqi Gao and Jian Zhao and Kaiyan Zhang and Xiu Li and Biqing Qi and Wanli Ouyang and Bowen Zhou},
+  journal = {arXiv preprint arXiv:2502.06703},
+  year    = {2025}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This website template is adapted from <a rel="template"
+            href="https://nerfies.github.io/">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .shaded {
+    /* 10% opacity cyan */
+    background-color: rgba(0, 255, 255, 0.1);
+  }
+</style>
+
+</body>
+</html>
+
