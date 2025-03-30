@@ -75,19 +75,19 @@ If you find this work helpful, please kindly cite our paper:
 }
 ```
 
-You can also check out our collection of PRMs in [Awesome-Process-Reward-Models](https://github.com/RyanLiu112/Awesome-Process-Reward-Models):
+Our collection of PRMs in [Awesome-Process-Reward-Models](https://github.com/RyanLiu112/Awesome-Process-Reward-Models):
 
 ```bibtex
 @misc{Awesome-Process-Reward-Models,
-    title   = {Awesome Process Reward Models},
-    author  = {Runze Liu and Jian Zhao and Kaiyan Zhang and Zhimu Zhou and Junqi Gao and Dong Li and Jiafei Lyu and Zhouyi Qian and Biqing Qi and Xiu Li and Bowen Zhou},
-    url     = {https://github.com/RyanLiu112/Awesome-Process-Reward-Models},
-    note    = {GitHub Repository},
-    year    = {2025}
+    title        = {Awesome Process Reward Models},
+    author       = {Runze Liu and Jian Zhao and Kaiyan Zhang and Zhimu Zhou and Junqi Gao and Dong Li and Jiafei Lyu and Zhouyi Qian and Biqing Qi and Xiu Li and Bowen Zhou},
+    howpublished = {\url{https://github.com/RyanLiu112/Awesome-Process-Reward-Models}},
+    note         = {GitHub repository},
+    year         = {2025}
 }
 ```
 
-Our recent work on LLM test-time scaling with PRMs on mathematical tasks:
+Our recent work on LLM test-time scaling with PRMs:
 
 ```bibtex
 @article{liu2025can,
@@ -100,6 +100,6 @@ Our recent work on LLM test-time scaling with PRMs on mathematical tasks:
 
 ## 💡 Acknowledgement
 
-GenPRM training is based on [axolotl](https://github.com/axolotl-ai-cloud/axolotl) and [RLHFlow](https://github.com/RLHFlow/RLHF-Reward-Modeling/tree/main/math-rm). The evaluation code is based on [Qwen2.5-Math](https://github.com/QwenLM/Qwen2.5-Math).
+The model training is based on [axolotl](https://github.com/axolotl-ai-cloud/axolotl) and [RLHFlow](https://github.com/RLHFlow/RLHF-Reward-Modeling/tree/main/math-rm). The mathematical evaluation code is based on [Qwen2.5-Math](https://github.com/QwenLM/Qwen2.5-Math).
 
 
