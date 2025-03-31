@@ -9,7 +9,7 @@
 <div align="center">
   <p>
     <a href="#-news" style="text-decoration: none; font-weight: bold;">🔔 News</a> •
-    <a href="#-tts-methods" style="text-decoration: none; font-weight: bold;">👀 Method</a> •
+    <a href="#-method" style="text-decoration: none; font-weight: bold;">👀 Method</a> •
     <a href="#-results" style="text-decoration: none; font-weight: bold;">🏆 Results</a>
   </p>
   <p>
@@ -19,17 +19,21 @@
   </p>
 </div>
 
+We propose **GenPRM**, which performs explicit CoT reasoning and code verfication before providing final process judgment.
 
+<img src="./static/images/comparison.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="comparison">
 
 ## 🔔 News
 
-<!-- - **[2025-03]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2503.xxxxx). -->
+- **[2025-04-01]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2504.xxxxx).
 
 TBD
 
 ## 👀 Method
 
-TBD
+Our framework:
+
+<img src="./static/images/framework2.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="framework2">
 
 ## 🏆 Results
 
