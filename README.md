@@ -2,7 +2,7 @@
 
 # GenPRM
 
-
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2504.xxxxx) [![Website](https://img.shields.io/badge/Project_Page-000acc?style=for-the-badge&logo=githubpages&logoColor=000&logoColor=white)](https://ryanliu112.github.io/GenPRM)  [![Github](https://img.shields.io/badge/GitHub-000000?style=for-the-badge&logo=github&logoColor=000&logoColor=white)](https://github.com/RyanLiu112/GenPRM)  [![HuggingFace](https://img.shields.io/badge/HugggingFace-fcd022?style=for-the-badge&logo=huggingface&logoColor=000)](https://huggingface.co/GenPRM)
 
 </div>
 
@@ -19,7 +19,20 @@
   </p>
 </div>
 
-We propose **GenPRM**, which performs explicit CoT reasoning and code verfication before providing final process judgment.
+## 🎯 Overview
+
+We propose **GenPRM**, a strong generative process reward model with the following features:
+
+- reasoning with explicit CoT and code verfication before providing the process judgment;
+- improving Monte Carlo estimation and hard label with Relative Progress Estimation (RPE);
+- supporting GenPRM **test-time scaling** with majority voting;
+- supporting policy model test-time scaling with GenPRM as **verifiers** or **critic** models.
+
+We will release all code, model, and data, including:
+
+- GenPRM with parameters of 1.5B, 7B, 14B, 32B, and 70B (ongoing);
+- 23K training data from MATH dataset (ongoing);
+- all details including solution generation, Monte Carlo estimation, RPE, model training and inference (ongoing).
 
 <img src="./static/images/comparison.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="comparison">
 
