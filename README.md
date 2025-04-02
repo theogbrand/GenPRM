@@ -38,7 +38,7 @@ We will release all code, model, and data, including:
 
 ## 🔔 News
 
-- **[2025-04-01]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2504.xxxxx).
+- **[2025-04-01]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2504.00891).
 
 TBD
 
@@ -87,7 +87,7 @@ If you find this work helpful, please kindly cite our paper:
 @article{zhao2025genprm,
     title   = {GenPRM: Scaling Test-Time Compute of Process Reward Models via Generative Reasoning},
     author  = {Jian Zhao and Runze Liu and Kaiyan Zhang and Zhimu Zhou and Junqi Gao and Dong Li and Jiafei Lyu and Zhouyi Qian and Biqing Qi and Xiu Li and Bowen Zhou},
-    journal = {arXiv preprint arXiv:2503.xxxxx},
+    journal = {arXiv preprint arXiv:2504.00891},
     year    = {2025}
 }
 ```
