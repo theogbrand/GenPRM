@@ -31,7 +31,7 @@ We propose **GenPRM**, a strong generative process reward model with the followi
 We will release all code, model, and data, including:
 
 - GenPRM with parameters of 1.5B, 7B, 14B, 32B, and 70B (ongoing);
-- 23K training data from MATH dataset (ongoing);
+- 23K training data from MATH dataset;
 - all details including solution generation, Monte Carlo estimation, RPE, model training and inference (ongoing).
 
 <img src="./static/images/comparison.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="comparison">
@@ -49,7 +49,13 @@ Our framework:
 
 ## 🏆 Results
 
-TBD
+<img src="./static/images/fig_head.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="fig_head">
+
+<img src="./static/images/main_processbench.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="main_processbench">
+
+<img src="./static/images/main_bon.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="main_bon">
+
+<img src="./static/images/critic.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="fig_head">
 
 ## 🚀 Getting Started
 
