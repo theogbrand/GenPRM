@@ -83,6 +83,20 @@ Try GenPRM in action with:
 - **Interactive Jupyter Notebook**: [demo.ipynb](src/example/demo.ipynb) (quick start of GenPRM inference)  
 - **Process Supervision Cases**: [Case 1](src/example/case1.md) | [Case 2](src/example/case2.md)
 
+For quick start, you can use [gemprm_inference](src/prm_evaluation/gemprm_inference.py) module to implement model inference:
+```python
+from prm_evaluation.genprm_inference import GenPRM, CodeExecutor
+
+genprm = GenPRM('GenPRM/GenPRM-7B')
+
+messages = [ 
+    { "content": "You are a math teacher. Your task is to review and critique the paragraphs in solution step by step.", "role": "system" }, 
+    { "content": "Question: Jo adds up all the positive integers from 1 to 100. Kate does a similar thing with the first 100 positive integers; however, she first rounds every integer to its nearest multiple of 10 (rounding 5s up) and then adds the 100 values. What is the positive difference between Jo's sum and Kate's sum?\n\nFirst, we need to calculate Jo's sum, which is the sum of all positive integers from 1 to 100. This can be directly computed using the formula for the sum of the first \\(n\\) positive integers, which is \\(\\frac{n(n+1)}{2}\\). For \\(n = 100\\), Jo's sum is \\(\\frac{100 \\cdot 101}{2} = 5050\\).", "role": "user" }, 
+]
+code_executor = CodeExecutor()
+output, reward = genprm.inference(messages, cur_step=1, code_executor=code_executor)
+print(reward)
+```
 
 TBD
 
