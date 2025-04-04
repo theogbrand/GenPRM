@@ -21,6 +21,8 @@
 
 ## 🎯 Overview
 
+<img src="./static/images/fig_head.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="fig_head">
+
 We propose **GenPRM**, a strong generative process reward model with the following features:
 
 - reasoning with explicit CoT and code verfication before providing the process judgment;
@@ -48,8 +50,6 @@ Our framework:
 <img src="./static/images/framework2.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="framework2">
 
 ## 🏆 Results
-
-<img src="./static/images/fig_head.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="fig_head">
 
 <img src="./static/images/main_processbench.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="main_processbench">
 
