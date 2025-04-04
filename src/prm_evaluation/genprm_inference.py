@@ -223,7 +223,7 @@ class GenPRM:
             )
             if logging:
                 cprint(prompt+analyze_start, f'paragraph {cur_step} request 1')
-            output1 = self.model.generate(prompt+analyze_start, sampling_params=sampling_params)[0].outputs[0]
+            output1 = self.model.generate(prompt+analyze_start, sampling_params=sampling_params, use_tqdm=False)[0].outputs[0]
             if verify:
                 cur_prompt = analyze_start + output1.text + verify_start  # generate <verify> if verify is True
             else:
