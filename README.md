@@ -95,6 +95,7 @@ messages = [
 ]
 code_executor = CodeExecutor()
 output, reward = genprm.inference(messages, cur_step=1, code_executor=code_executor)
+print("Model output for the first solution step: " + output[0])
 print(reward)
 ```
 
