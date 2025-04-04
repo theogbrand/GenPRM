@@ -76,6 +76,12 @@ conda activate GenPRM
 pip install -r requirements.txt
 ```
 
+### Examples & Demos  
+Try GenPRM in action with:  
+- **Interactive Jupyter Notebook**: [demo.ipynb](src/example/demo.ipynb) (quick start of GenPRM inference)  
+- **Process Supervision Cases**: [Case 1](src/example/case1.md) | [Case 2](src/example/case2.md)
+
+
 TBD
 
 > [!NOTE]
