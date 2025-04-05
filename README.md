@@ -27,8 +27,8 @@ We propose **GenPRM**, a strong generative process reward model with the followi
 
 - reasoning with explicit CoT and code verfication before providing the process judgment;
 - improving Monte Carlo estimation and hard label with Relative Progress Estimation (RPE);
-- supporting GenPRM **test-time scaling** with majority voting;
-- supporting policy model test-time scaling with GenPRM as **verifiers** or **critic** models.
+- supporting GenPRM **test-time scaling** in a parallel manner with majority voting;
+- supporting policy model test-time scaling with GenPRM as **verifiers** or **critics**.
 
 We will release all code, model, and data, including:
 
@@ -40,8 +40,7 @@ We will release all code, model, and data, including:
 
 ## 🔔 News
 
-- **[2024-04-05] Inference Module Released**
-✨ Code for GenPRM inference has become available
+- **[2024-04-05]** ✨ Inference code is now available.
 - **[2025-04-03]** ✨ Our models (1.5B & 7B) and training data are released on [HuggingFace](https://huggingface.co/collections/GenPRM/genprm-67ee4936234ba5dd16bb9943).
 <!-- - **[2025-04-01]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2504.00891). -->
 
@@ -53,9 +52,15 @@ Our framework:
 
 ## 🏆 Results
 
+### ProcessBench
+
 <img src="./static/images/main_processbench.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="main_processbench">
 
+### Best-of-N
+
 <img src="./static/images/main_bon.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="main_bon">
+
+### Critique Refinement
 
 <img src="./static/images/critic.png" alt="" style="width: 100%; max-width: 1000px; margin-top: 20px; margin-bottom: 10px;" id="fig_head">
 
@@ -78,20 +83,23 @@ conda activate GenPRM
 pip install -r requirements.txt
 ```
 
-### Examples & Demos  
-Try GenPRM in action with:  
-- **Interactive Jupyter Notebook**: [demo.ipynb](src/example/demo.ipynb) (quick start of GenPRM inference)  
+### Examples & Demos
+
+Try GenPRM in action with:
+
+- **Interactive Jupyter Notebook**: [demo.ipynb](src/example/demo.ipynb) (quick start of GenPRM inference)
 - **Process Supervision Cases**: [Case 1](src/example/case1.md) | [Case 2](src/example/case2.md)
 
-For quick start, you can use [gemprm_inference](src/prm_evaluation/gemprm_inference.py) module to implement model inference:
+For a quick start, you can use [gemprm_inference](src/prm_evaluation/gemprm_inference.py) module to implement model inference:
+
 ```python
 from prm_evaluation.genprm_inference import GenPRM, CodeExecutor
 
 genprm = GenPRM('GenPRM/GenPRM-7B')
 
 messages = [ 
-    { "content": "You are a math teacher. Your task is to review and critique the paragraphs in solution step by step.", "role": "system" }, 
-    { "content": "Question: Jo adds up all the positive integers from 1 to 100. Kate does a similar thing with the first 100 positive integers; however, she first rounds every integer to its nearest multiple of 10 (rounding 5s up) and then adds the 100 values. What is the positive difference between Jo's sum and Kate's sum?\n\nFirst, we need to calculate Jo's sum, which is the sum of all positive integers from 1 to 100. This can be directly computed using the formula for the sum of the first \\(n\\) positive integers, which is \\(\\frac{n(n+1)}{2}\\). For \\(n = 100\\), Jo's sum is \\(\\frac{100 \\cdot 101}{2} = 5050\\).", "role": "user" }, 
+    {"role": "system", "content": "You are a math teacher. Your task is to review and critique the paragraphs in solution step by step."}, 
+    {"role": "user", "content": "Question: Jo adds up all the positive integers from 1 to 100. Kate does a similar thing with the first 100 positive integers; however, she first rounds every integer to its nearest multiple of 10 (rounding 5s up) and then adds the 100 values. What is the positive difference between Jo's sum and Kate's sum?\n\nFirst, we need to calculate Jo's sum, which is the sum of all positive integers from 1 to 100. This can be directly computed using the formula for the sum of the first \\(n\\) positive integers, which is \\(\\frac{n(n+1)}{2}\\). For \\(n = 100\\), Jo's sum is \\(\\frac{100 \\cdot 101}{2} = 5050\\)."}, 
 ]
 code_executor = CodeExecutor()
 output, reward = genprm.inference(messages, cur_step=1, code_executor=code_executor)
@@ -103,7 +111,6 @@ TBD
 
 > [!NOTE]
 > Our mathematical expression evaluation code is based on [Qwen2.5-Math](https://github.com/QwenLM/Qwen2.5-Math). For a more powerful evaluator, please refer to this repository: [Math-Verify](https://github.com/huggingface/Math-Verify).
-
 
 
 
