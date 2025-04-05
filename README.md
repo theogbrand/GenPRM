@@ -40,7 +40,7 @@ We will release all code, model, and data, including:
 
 ## 🔔 News
 
-- **[2024-04-05]** ✨ Inference code is now available.
+- **[2025-04-05]** ✨ Inference code is available.
 - **[2025-04-03]** ✨ Our models (1.5B & 7B) and training data are released on [HuggingFace](https://huggingface.co/collections/GenPRM/genprm-67ee4936234ba5dd16bb9943).
 <!-- - **[2025-04-01]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2504.00891). -->
 
