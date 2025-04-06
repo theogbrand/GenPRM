@@ -122,6 +122,7 @@ python utils/split_dataset.py \
 Generate step-by-step outputs of PRM
 
 ```bash
+# example of processbench
 python prm_evaluation/prm_evaluate.py \
     --reward_name_or_path "GenPRM/GenPRM-7B"\
     --data_path "_data/split_input/ProcessBench"\
@@ -137,8 +138,8 @@ Execute policy refinement based on GenPRM's split output
 ```bash
 python prm_evaluation/policy_refine.py \
     --model_path "Qwen/Qwen2.5-7B-Instruct" \
-    --data_path "_output/split_output/ProcessBench"\
-    --split_out "_output/split_refine/ProcessBench"
+    --data_path "_output/split_output/..."\
+    --split_out "_output/split_refine/..."
 ```
 
 
