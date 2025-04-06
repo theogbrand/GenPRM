@@ -42,7 +42,7 @@ We will release all code, model, and data, including:
 
 - **[2025-04-06]** ✨ The evaluation code and [GenPRM-32B](https://huggingface.co/GenPRM/GenPRM-32B) are available.
 - **[2025-04-05]** ✨ The inference code is available.
-- **[2025-04-03]** ✨ Our models (1.5B & 7B) and training data are released on [HuggingFace](https://huggingface.co/collections/GenPRM/genprm-67ee4936234ba5dd16bb9943).
+- **[2025-04-03]** ✨ Our models ([GenPRM-1.5B](https://huggingface.co/GenPRM/GenPRM-1.5B) & [GenPRM-7B](https://huggingface.co/GenPRM/GenPRM-7B)) and training data are released on [HuggingFace](https://huggingface.co/collections/GenPRM/genprm-67ee4936234ba5dd16bb9943).
 - **[2025-04-01]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2504.00891).
 
 ## 👀 Method
