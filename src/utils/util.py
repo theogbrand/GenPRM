@@ -26,6 +26,9 @@ from datasets import Dataset, DatasetDict, load_from_disk, load_dataset
 from datetime import datetime
 from colorama import Fore, init
 
+# initialize colorama log
+init()
+
 def cprint(s, start):
     if not isinstance(s, str):
         s = str(s)
@@ -86,4 +89,3 @@ def print_args(args: argparse.Namespace,
     output.append(f"\033[1;35m{sep}\033[0m\n")
     
     print('\n'.join(output))
-    

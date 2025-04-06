@@ -40,6 +40,7 @@ We will release all code, model, and data, including:
 
 ## 🔔 News
 
+- **[2025-04-06]** ✨ Model evaluation and policy refinemnet code is available.
 - **[2025-04-05]** ✨ Inference code is available.
 - **[2025-04-03]** ✨ Our models (1.5B & 7B) and training data are released on [HuggingFace](https://huggingface.co/collections/GenPRM/genprm-67ee4936234ba5dd16bb9943).
 <!-- - **[2025-04-01]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2504.00891). -->
@@ -106,6 +107,40 @@ output, reward = genprm.inference(messages, cur_step=1, code_executor=code_execu
 print("Model output for the first solution step: " + output[0])
 print(reward)
 ```
+
+### ProcessBench/Best of N evaluation
+
+Split the dataset into individual shards (require `steps`, `problem` fields)
+
+```bash
+# example of processbench
+python utils/split_dataset.py \
+    --dataset "Qwen/ProcessBench" \
+    --split_dir "_data/split_input/ProcessBench"
+```
+
+Generate step-by-step outputs of PRM
+
+```bash
+python prm_evaluation/prm_evaluate.py \
+    --reward_name_or_path "GenPRM/GenPRM-7B"\
+    --data_path "_data/split_input/ProcessBench"\
+    --split_out "_output/split_output/ProcessBench"\
+    --analyze \
+    --verify \
+    --execute
+```
+### Critique-refinement
+
+Execute policy refinement based on GenPRM's split output
+
+```bash
+python prm_evaluation/policy_refine.py \
+    --model_path "Qwen/Qwen2.5-7B-Instruct" \
+    --data_path "_output/split_output/ProcessBench"\
+    --split_out "_output/split_refine/ProcessBench"
+```
+
 
 TBD
 
