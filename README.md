@@ -25,8 +25,8 @@
 
 We propose **GenPRM**, a strong generative process reward model with the following features:
 
-- reasoning with explicit CoT and code verfication before providing the process judgment;
-- improving Monte Carlo estimation and hard label with Relative Progress Estimation (RPE);
+- performing explicit **CoT reasoning** and **code verfication** before providing the process judgment;
+- improving Monte Carlo estimation and hard label with **Relative Progress Estimation (RPE)**;
 - supporting GenPRM **test-time scaling** in a parallel manner with majority voting;
 - supporting policy model test-time scaling with GenPRM as **verifiers** or **critics**.
 
