@@ -108,9 +108,9 @@ print("Model output for the first solution step: " + output[0])
 print(reward)
 ```
 
-### ProcessBench/Best of N evaluation
+### ProcessBench / Best-of-N evaluation
 
-Split the dataset into individual shards (require `steps`, `problem` fields)
+Split the dataset into individual shards (require `steps` and `problem` fields)
 
 ```bash
 # example of processbench
@@ -124,13 +124,14 @@ Generate step-by-step outputs of PRM
 ```bash
 # example of processbench
 python prm_evaluation/prm_evaluate.py \
-    --reward_name_or_path "GenPRM/GenPRM-7B"\
-    --data_path "_data/split_input/ProcessBench"\
-    --split_out "_output/split_output/ProcessBench"\
+    --reward_name_or_path "GenPRM/GenPRM-7B" \
+    --data_path "_data/split_input/ProcessBench" \
+    --split_out "_output/split_output/ProcessBench" \
     --analyze \
     --verify \
     --execute
 ```
+
 ### Critique-refinement
 
 Execute policy refinement based on GenPRM's split output
@@ -143,7 +144,6 @@ python prm_evaluation/policy_refine.py \
 ```
 
 
-TBD
 
 > [!NOTE]
 > Our mathematical expression evaluation code is based on [Qwen2.5-Math](https://github.com/QwenLM/Qwen2.5-Math). For a more powerful evaluator, please refer to this repository: [Math-Verify](https://github.com/huggingface/Math-Verify).
