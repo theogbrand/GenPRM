@@ -1,9 +1,9 @@
 .DS_Store
 /.idea
 
-src/prm_evaluation/policy_refine.py
+# src/prm_evaluation/policy_refine.py
 src/prm_evaluation/prm_critique.py
-src/prm_evaluation/prm_evaluate.py
+# src/prm_evaluation/prm_evaluate.py
 src/rationale_generation/process.py
 src/reward_generation/math_shepherd_ray.py
 src/reward_generation/math_shepherd_utils.py
