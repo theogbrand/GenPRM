@@ -25,8 +25,8 @@
 
 We propose **GenPRM**, a strong generative process reward model with the following features:
 
-- reasoning with explicit CoT and code verfication before providing the process judgment;
-- improving Monte Carlo estimation and hard label with Relative Progress Estimation (RPE);
+- performing explicit **CoT reasoning** and **code verfication** before providing the process judgment;
+- improving Monte Carlo estimation and hard label with **Relative Progress Estimation (RPE)**;
 - supporting GenPRM **test-time scaling** in a parallel manner with majority voting;
 - supporting policy model test-time scaling with GenPRM as **verifiers** or **critics**.
 
@@ -40,10 +40,10 @@ We will release all code, model, and data, including:
 
 ## 🔔 News
 
-- **[2025-04-06]** ✨ Model evaluation and policy refinemnet code is available.
-- **[2025-04-05]** ✨ Inference code is available.
-- **[2025-04-03]** ✨ Our models (1.5B & 7B) and training data are released on [HuggingFace](https://huggingface.co/collections/GenPRM/genprm-67ee4936234ba5dd16bb9943).
-<!-- - **[2025-04-01]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2504.00891). -->
+- **[2025-04-06]** ✨ The evaluation code and [GenPRM-32B](https://huggingface.co/GenPRM/GenPRM-32B) are available.
+- **[2025-04-05]** ✨ The inference code is available.
+- **[2025-04-03]** ✨ Our models ([GenPRM-1.5B](https://huggingface.co/GenPRM/GenPRM-1.5B) & [GenPRM-7B](https://huggingface.co/GenPRM/GenPRM-7B)) and training data are released on [HuggingFace](https://huggingface.co/collections/GenPRM/genprm-67ee4936234ba5dd16bb9943).
+- **[2025-04-01]** 📄 Our paper is released on [arXiv](https://arxiv.org/abs/2504.00891).
 
 ## 👀 Method
 
@@ -108,9 +108,9 @@ print("Model output for the first solution step: " + output[0])
 print(reward)
 ```
 
-### ProcessBench/Best of N evaluation
+### ProcessBench / Best-of-N evaluation
 
-Split the dataset into individual shards (require `steps`, `problem` fields)
+Split the dataset into individual shards (require `steps` and `problem` fields)
 
 ```bash
 # example of processbench
@@ -124,13 +124,14 @@ Generate step-by-step outputs of PRM
 ```bash
 # example of processbench
 python prm_evaluation/prm_evaluate.py \
-    --reward_name_or_path "GenPRM/GenPRM-7B"\
-    --data_path "_data/split_input/ProcessBench"\
-    --split_out "_output/split_output/ProcessBench"\
+    --reward_name_or_path "GenPRM/GenPRM-7B" \
+    --data_path "_data/split_input/ProcessBench" \
+    --split_out "_output/split_output/ProcessBench" \
     --analyze \
     --verify \
     --execute
 ```
+
 ### Critique-refinement
 
 Execute policy refinement based on GenPRM's split output
@@ -143,7 +144,6 @@ python prm_evaluation/policy_refine.py \
 ```
 
 
-TBD
 
 > [!NOTE]
 > Our mathematical expression evaluation code is based on [Qwen2.5-Math](https://github.com/QwenLM/Qwen2.5-Math). For a more powerful evaluator, please refer to this repository: [Math-Verify](https://github.com/huggingface/Math-Verify).
