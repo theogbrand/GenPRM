@@ -2,6 +2,7 @@
 
 import os
 import sys
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.abspath(os.path.join(current_dir, ".."))
 sys.path.append(root_dir)
@@ -23,12 +24,13 @@ os.environ['VLLM_USE_V1'] = '0'
 
 version = 'v1.0'
 
-TIME_LIMIT = 300   # set time limit
+TIME_LIMIT = 300  # set time limit
 stop_event = threading.Event()
+
 
 def heart_beat_worker(file_path):
     start_time = time.time()
-    
+
     while not stop_event.is_set():
         if os.path.exists(file_path):
             try:
@@ -50,22 +52,24 @@ def heart_beat_worker(file_path):
                 return
             time.sleep(5)
 
+
 def split_at_last_boxed(text):
     last_boxed_match = None
     for match in re.finditer(r'\\boxed\{', text):
         last_boxed_match = match
-    
+
     if not last_boxed_match:
         return (text, None)
-    
+
     start_pos = last_boxed_match.start()
-    
+
     last_period = text.rfind('.', 0, start_pos)
-    
+
     if last_period == -1:
         return (text[:start_pos], text[start_pos:])
     else:
-        return (text[:last_period+1], text[last_period+1:])
+        return (text[:last_period + 1], text[last_period + 1:])
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Process data with optional generation trigger.")
@@ -74,10 +78,14 @@ def parse_args():
     parser.add_argument("--split_out", type=str, help="Path to the output data.")
     return parser.parse_args()
 
+
 args = parse_args()
-print_args(args, 
+print_args(
+    args,
     program_name="policy refine with critique",
-    version=version)
+    version=version
+)
+
 
 #####################################################           model load with VLLM             ########################################################
 
@@ -95,6 +103,7 @@ def initialize_vllm(model_path):
         tokenizer = AutoTokenizer.from_pretrained(model_path)
         return model, tokenizer
 
+
 model, tokenizer = initialize_vllm(args.model_path)
 
 #####################################################           load dataset             ########################################################
@@ -102,10 +111,12 @@ model, tokenizer = initialize_vllm(args.model_path)
 
 random.seed(int(time.time()))
 
+
 def get_shuffled_folders(directory):
     folders = [f for f in os.listdir(directory) if os.path.isdir(os.path.join(directory, f))]
     random.shuffle(folders)
     return folders
+
 
 target_list = get_shuffled_folders(args.data_path)
 
@@ -133,7 +144,7 @@ for data_path in target_list:
         else:
             timestamped_print(f"skip: {save_path} (not empty)")
             continue
-    
+
     stop_event.clear()
     thread = threading.Thread(target=heart_beat_worker, args=(save_path,))
     thread.daemon = True
@@ -143,7 +154,7 @@ for data_path in target_list:
     timestamped_print(data)
     data_new = data.to_list()
     sample = deepcopy(data_new)[0]
-    
+
     data_input = sample['steps']
     data_input[0] = sample['problem'] + '\n' + data_input[0]
 
@@ -155,6 +166,7 @@ for data_path in target_list:
                 if val < 0.5:
                     return idx
             return None
+
 
         def extract_after_first_colon(text):
             if type(text) is list:
@@ -169,13 +181,14 @@ for data_path in target_list:
                     return None
                 return content[colon_pos + 1:].strip()
 
+
         idx = find_value_below_threshold(data_new)
         if idx is not None:
-            assistant_content = '\n\n'.join(sample['steps'][:idx+1])
+            assistant_content = '\n\n'.join(sample['steps'][:idx + 1])
             if 'Qwen2.5-7B-Instruct' in args.model_path:
-                critic_content = "There might be some problem in this paragraph of your reasoning, please rethink and refine your answer:\n" +  \
-                    '>' + sample['steps'][idx] + '\n\n' + \
-                    extract_after_first_colon(sample['conversation'][2*idx+2]['content'])
+                critic_content = "There might be some problem in this paragraph of your reasoning, please rethink and refine your answer:\n" + \
+                                 '>' + sample['steps'][idx] + '\n\n' + \
+                                 extract_after_first_colon(sample['conversation'][2 * idx + 2]['content'])
                 messages = [
                     {"role": "system", "content": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant."},
                     {"role": "user", "content": sample['problem'] + "\n\nPlease reason step by step, and put your final answer within \\boxed{}."},
@@ -187,12 +200,12 @@ for data_path in target_list:
                     temperature=0.7,
                     top_p=0.8,
                     top_k=20,
-                    max_tokens=16384,    # Maximum number of tokens to generate
+                    max_tokens=16384,  # Maximum number of tokens to generate
                 )
             elif 'gemma' in args.model_path:
-                critic_content = "There might be some problem in this paragraph of your reasoning, please rethink and refine your answer:\n" +  \
-                    '>' + sample['steps'][idx] + '\n\n' + \
-                    extract_after_first_colon(sample['conversation'][2*idx+2]['content'])
+                critic_content = "There might be some problem in this paragraph of your reasoning, please rethink and refine your answer:\n" + \
+                                 '>' + sample['steps'][idx] + '\n\n' + \
+                                 extract_after_first_colon(sample['conversation'][2 * idx + 2]['content'])
                 messages = [
                     {"role": "system", "content": [{"type": "text", "text": "You are a helpful assistant."}]},
                     {"role": "user", "content": [{"type": "text", "text": sample['problem'] + "\n\nPlease reason step by step, and put your final answer within \\boxed{}."}]},
@@ -204,14 +217,14 @@ for data_path in target_list:
                     temperature=0.7,
                     top_p=0.95,
                     top_k=64,
-                    max_tokens=16384,    # Maximum number of tokens to generate
+                    max_tokens=16384,  # Maximum number of tokens to generate
                 )
             else:
                 raise ValueError('invalid model_path')
 
             prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
             cprint(idx, 'idx')
-            cprint(sample['conversation'][2*idx+2]['content'], 'critic content')
+            cprint(sample['conversation'][2 * idx + 2]['content'], 'critic content')
             cprint(messages, 'messages')
             cprint(prompt, 'prompt')
             output = model.generate(prompt, sampling_params, use_tqdm=False)[0].outputs[0]

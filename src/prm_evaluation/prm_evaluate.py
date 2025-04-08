@@ -2,6 +2,7 @@
 
 import os
 import sys
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.abspath(os.path.join(current_dir, ".."))
 sys.path.append(root_dir)
@@ -20,12 +21,13 @@ os.environ['VLLM_USE_V1'] = '0'
 
 version = 'v2.3'
 
-TIME_LIMIT = 300   # set time limit
+TIME_LIMIT = 300  # set time limit
 stop_event = threading.Event()
+
 
 def heart_beat_worker(file_path):
     start_time = time.time()
-    
+
     while not stop_event.is_set():
         if os.path.exists(file_path):
             try:
@@ -47,6 +49,7 @@ def heart_beat_worker(file_path):
                 return
             time.sleep(5)
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Process data with optional generation config.")
     parser.add_argument("--reward_name_or_path", type=str, help="Path to the reward model or data.")
@@ -60,10 +63,13 @@ def parse_args():
     parser.add_argument("--output_template", type=str, default="<output>\n**Judgement**: $\\boxed")
     return parser.parse_args()
 
+
 args = parse_args()
-print_args(args, 
+print_args(
+    args,
     program_name="prm_evaluate",
-    version=version)
+    version=version
+)
 
 #####################################################           model load with VLLM             ########################################################
 
@@ -73,10 +79,12 @@ genprm = GenPRM(args.reward_name_or_path)
 
 random.seed(int(time.time()))
 
+
 def get_shuffled_folders(directory):
     folders = [f for f in os.listdir(directory) if os.path.isdir(os.path.join(directory, f))]
     random.shuffle(folders)
     return folders
+
 
 target_list = get_shuffled_folders(args.data_path)
 
@@ -85,7 +93,7 @@ for data_path in target_list:
     save_path = os.path.join(args.split_out, folder_name)
     if args.analyze:
         save_path += '_analyze'
-    if args.verify: 
+    if args.verify:
         save_path += '_verify'
     if args.execute:
         save_path += '_execute'
@@ -110,7 +118,7 @@ for data_path in target_list:
         else:
             timestamped_print(f"skip: {save_path} (not empty)")
             continue
-    
+
     stop_event.clear()
     thread = threading.Thread(target=heart_beat_worker, args=(save_path,))
     thread.daemon = True
@@ -143,7 +151,7 @@ for data_path in target_list:
         message['conversation'].append(line)
         line = {'content': '', 'role': 'assistant'}
         message['conversation'].append(line)
-    
+
     timestamped_print(message)
 
     #####################################################           prm evaluate           ########################################################
@@ -161,22 +169,22 @@ for data_path in target_list:
             paths = conversation[:step_index]
             cur_step += 1
 
-            outputs, reward = genprm.inference( 
-                messages=paths, 
+            outputs, reward = genprm.inference(
+                messages=paths,
                 majority_num=1,
-                cur_step=cur_step, 
+                cur_step=cur_step,
                 analyze=args.analyze,
                 verify=args.verify,
                 execute=args.execute,
                 time_limit=3,
                 max_tokens=2048,
-                code_executor=code_executor, 
+                code_executor=code_executor,
                 analyze_template=args.analyze_template,
                 verify_template=args.verify_template,
                 output_template=args.output_template,
                 logging=True
             )
-            
+
             conversation[step_index] = {
                 'role': 'assistant',
                 'content': outputs[0]
@@ -193,7 +201,7 @@ for data_path in target_list:
         timestamped_print(f"dataset has been saved to: {save_path}")
     except Exception as e:
         traceback.print_exc()
-    
+
     stop_event.set()
     thread.join(timeout=5)
 

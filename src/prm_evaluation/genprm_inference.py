@@ -8,30 +8,33 @@ from contextlib import redirect_stdout
 from transformers import AutoTokenizer
 from vllm import LLM, SamplingParams
 
-
 TEMPERATURE = 0.6
 TOP_P = 0.95
 TOP_K = 20
 REPETITION_PENALTY = 1.0
 version = 'v1.0'
 
+
 class timeout:
     """timeout context manager"""
+
     def __init__(self, seconds=1):
         self.seconds = seconds
-    
+
     def __enter__(self):
         signal.signal(signal.SIGALRM, self.handle_timeout)
         signal.alarm(self.seconds)
-    
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         signal.alarm(0)
-    
+
     def handle_timeout(self, signum, frame):
         raise TimeoutError("Code execution timed out")
 
+
 class CodeExecutor:
     """code executor"""
+
     def __init__(self):
         self.namespace = {}  # indicate the global namespace for exec
         self.code_pattern = re.compile(r'```python\s*(.*?)\s*```', re.DOTALL)
@@ -43,7 +46,7 @@ class CodeExecutor:
         except Exception as e:
             actual = f"Code format error: No code found."
             return actual
-        
+
         # execute code block
         try:
             f = io.StringIO()
@@ -57,8 +60,9 @@ class CodeExecutor:
         except Exception as e:
             actual = f"Code execute Error: {type(e).__name__}: {e}"
             print(actual)
-        
-        return actual  
+
+        return actual
+
 
 class GenPRM:
     def __init__(self, model_path):
@@ -67,14 +71,14 @@ class GenPRM:
         self.model = LLM(model=model_path, gpu_memory_utilization=0.90, enable_chunked_prefill=True)
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         timestamped_print(f"GenPRM loaded successfully", level="INFO")
-    
+
     def get_reward_score(self, out):
         '''calculate the reward score'''
         generated_text = out.text
         logprobs = out.logprobs
         tokens = out.token_ids
         token_logprobs = logprobs
-        
+
         # find the position of Yes/No token
         boxed_match = re.search(r'(Yes|No)\}', generated_text, re.IGNORECASE)
         yes_token = self.tokenizer.encode('Yes')[-1]
@@ -135,20 +139,21 @@ class GenPRM:
             return 0.5
 
     def inference(
-            self, 
-            messages, 
-            majority_num=1,
-            cur_step=1,
-            analyze=True,
-            verify=True,
-            execute=True,
-            time_limit=3,
-            max_tokens=2048,
-            code_executor=None,
-            analyze_template="<analyze>\nLet's analyze the Paragraph {cur_step} step by step: ",
-            verify_template="<verify>\nLet's use python code to find any potential error:\n```python\n",
-            output_template="<output>\n**Judgement**: $\\boxed",
-            logging=True):
+        self,
+        messages,
+        majority_num=1,
+        cur_step=1,
+        analyze=True,
+        verify=True,
+        execute=True,
+        time_limit=3,
+        max_tokens=2048,
+        code_executor=None,
+        analyze_template="<analyze>\nLet's analyze the Paragraph {cur_step} step by step: ",
+        verify_template="<verify>\nLet's use python code to find any potential error:\n```python\n",
+        output_template="<output>\n**Judgement**: $\\boxed",
+        logging=True
+    ):
         '''
         messages: the input messages
         majority_num: the number of majority votes
@@ -168,7 +173,7 @@ class GenPRM:
         for i in range(majority_num):
             # perform inference
             output_path, reward_score = self._single_inference(
-                messages, 
+                messages,
                 cur_step=cur_step,
                 analyze=analyze,
                 verify=verify,
@@ -179,35 +184,36 @@ class GenPRM:
                 analyze_template=analyze_template,
                 verify_template=verify_template,
                 output_template=output_template,
-                logging=logging)
-            
+                logging=logging
+            )
+
             output_paths.append(output_path)
             reward_scores.append(reward_score)
-        
-        return output_paths, sum(reward_scores)/len(reward_scores)
+
+        return output_paths, sum(reward_scores) / len(reward_scores)
 
     def _single_inference(
-            self, 
-            messages, 
-            cur_step=1,
-            analyze=True,
-            verify=True,
-            execute=True,
-            time_limit=3,
-            max_tokens=2048,
-            code_executor=None,
-            analyze_template="<analyze>\nLet's analyze the Paragraph {cur_step} step by step: ",
-            verify_template="<verify>\nLet's use python code to find any potential error:\n```python\n",
-            output_template="<output>\n**Judgement**: $\\boxed",
-            logging=True):
-
+        self,
+        messages,
+        cur_step=1,
+        analyze=True,
+        verify=True,
+        execute=True,
+        time_limit=3,
+        max_tokens=2048,
+        code_executor=None,
+        analyze_template="<analyze>\nLet's analyze the Paragraph {cur_step} step by step: ",
+        verify_template="<verify>\nLet's use python code to find any potential error:\n```python\n",
+        output_template="<output>\n**Judgement**: $\\boxed",
+        logging=True
+    ):
         context = {"cur_step": cur_step}
         analyze_start = analyze_template.format(**context)
         verify_start = verify_template.format(**context)
         output_start = output_template.format(**context)
         # Prepare the input
         prompt = build_prompt(messages, self.tokenizer)
-        
+
         # Generate the output
         # Stage 1
         if analyze:
@@ -218,12 +224,12 @@ class GenPRM:
                 stop=['</analyze>\n'],
                 include_stop_str_in_output=True,
                 max_tokens=max_tokens,
-                logprobs=20,       # Number of log probabilities to return
+                logprobs=20,  # Number of log probabilities to return
                 repetition_penalty=REPETITION_PENALTY
             )
             if logging:
-                cprint(prompt+analyze_start, f'paragraph {cur_step} request 1')
-            output1 = self.model.generate(prompt+analyze_start, sampling_params=sampling_params, use_tqdm=False)[0].outputs[0]
+                cprint(prompt + analyze_start, f'paragraph {cur_step} request 1')
+            output1 = self.model.generate(prompt + analyze_start, sampling_params=sampling_params, use_tqdm=False)[0].outputs[0]
             if verify:
                 cur_prompt = analyze_start + output1.text + verify_start  # generate <verify> if verify is True
             else:
@@ -233,7 +239,7 @@ class GenPRM:
             cur_prompt = verify_start
         else:
             cur_prompt = output_start
-        
+
         # Stage 2
         cur_prompts = [cur_prompt]
         out_nodes = []
@@ -249,8 +255,8 @@ class GenPRM:
                         top_k=TOP_K,
                         stop=['\n```\n', '</output>\n'],  # set the stop string
                         include_stop_str_in_output=True,  # include the stop string in the output
-                        max_tokens=left_tokens,    # Maximum number of tokens to generate
-                        logprobs=20,       # Number of log probabilities to return
+                        max_tokens=left_tokens,  # Maximum number of tokens to generate
+                        logprobs=20,  # Number of log probabilities to return
                         repetition_penalty=REPETITION_PENALTY,
                     )
                 else:
@@ -261,8 +267,8 @@ class GenPRM:
                         top_k=TOP_K,
                         stop=['</output>\n'],  # set the stop string
                         include_stop_str_in_output=True,  # include the stop string in the output
-                        max_tokens=left_tokens,    # Maximum number of tokens to generate
-                        logprobs=20,       # Number of log probabilities to return
+                        max_tokens=left_tokens,  # Maximum number of tokens to generate
+                        logprobs=20,  # Number of log probabilities to return
                         repetition_penalty=REPETITION_PENALTY,
                     )
                 if logging:
@@ -272,7 +278,7 @@ class GenPRM:
                 # if the time limit is reached, or the left tokens are not enough
                 if analyze:
                     # degrade into analyze mode
-                    cur_prompts = [analyze_start+output1.text.split('</analyze>')[0]+'</analyze>\n'+output_start]
+                    cur_prompts = [analyze_start + output1.text.split('</analyze>')[0] + '</analyze>\n' + output_start]
                 else:
                     # enter the output mode
                     cur_prompts = [cur_prompts[0] + '</verify>\n' + output_start]
@@ -284,27 +290,27 @@ class GenPRM:
                     top_k=TOP_K,
                     stop=['</output>\n'],  # set the stop string
                     include_stop_str_in_output=True,  # include the stop string in the output
-                    max_tokens=left_tokens,    # Maximum number of tokens to generate
-                    logprobs=20,       # Number of log probabilities to return
+                    max_tokens=left_tokens,  # Maximum number of tokens to generate
+                    logprobs=20,  # Number of log probabilities to return
                     repetition_penalty=REPETITION_PENALTY,
                 )
                 if logging:
                     cprint(prompt + cur_prompts[0], f'paragraph {cur_step} request {cur_time + 2}')
                 output2 = self.model.generate(prompt + cur_prompts[0], sampling_params, use_tqdm=False)[0].outputs[0]
-            
+
             cur_time += 1
             new_prompts = []
             if output2.text.endswith('</output>\n'):
-                output2.text = cur_prompt+output2.text
+                output2.text = cur_prompt + output2.text
                 out_nodes.append(output2)
             else:
                 if execute:
                     # execute the code
-                    code_output = code_executor.execute(cur_prompt+output2.text)
+                    code_output = code_executor.execute(cur_prompt + output2.text)
                     code_content = f"[Code Output]\n\n```\n{code_output}\n```\n"
-                    new_prompts.append(cur_prompt+output2.text+code_content)
+                    new_prompts.append(cur_prompt + output2.text + code_content)
                 else:
-                    new_prompts.append(cur_prompt+output2.text + '[Code Output]\n\n```\n')
+                    new_prompts.append(cur_prompt + output2.text + '[Code Output]\n\n```\n')
 
             cur_prompts = new_prompts
 
