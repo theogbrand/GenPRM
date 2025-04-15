@@ -40,6 +40,7 @@ We will release all code, model, and data, including:
 
 ## 🔔 News
 
+- **[2025-04-14]** 📢 GenPRM is reported by [Synced (机器之心)](https://mp.weixin.qq.com/s/P2OPxTMzB6Zp8Rb3RN86wQ)!
 - **[2025-04-06]** ✨ The evaluation code and [GenPRM-32B](https://huggingface.co/GenPRM/GenPRM-32B) are available.
 - **[2025-04-05]** ✨ The inference code is available.
 - **[2025-04-03]** ✨ Our models ([GenPRM-1.5B](https://huggingface.co/GenPRM/GenPRM-1.5B) & [GenPRM-7B](https://huggingface.co/GenPRM/GenPRM-7B)) and training data are released on [HuggingFace](https://huggingface.co/collections/GenPRM/genprm-67ee4936234ba5dd16bb9943).
