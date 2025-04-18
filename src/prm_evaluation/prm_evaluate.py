@@ -7,7 +7,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.abspath(os.path.join(current_dir, ".."))
 sys.path.append(root_dir)
 import argparse
-import os
+import json
 import random
 import time
 import threading
@@ -61,6 +61,9 @@ def parse_args():
     parser.add_argument("--analyze_template", type=str, default="<analyze>\nLet's analyze the Paragraph {cur_step} step by step: ")
     parser.add_argument("--verify_template", type=str, default="<verify>\nLet's use python code to find any potential error:\n```python\n")
     parser.add_argument("--output_template", type=str, default="<output>\n**Judgement**: $\\boxed")
+    parser.add_argument("--tensor_parallel_size", type=int, default=1)
+    parser.add_argument("--idd", type=int, default=1)
+
     return parser.parse_args()
 
 
@@ -73,7 +76,7 @@ print_args(
 
 #####################################################           model load with VLLM             ########################################################
 
-genprm = GenPRM(args.reward_name_or_path)
+genprm = GenPRM(args.reward_name_or_path, args.tensor_parallel_size)
 
 #####################################################           load splited dataset             ########################################################
 
@@ -91,6 +94,7 @@ target_list = get_shuffled_folders(args.data_path)
 for data_path in target_list:
     folder_name = os.path.basename(data_path)
     save_path = os.path.join(args.split_out, folder_name)
+
     if args.analyze:
         save_path += '_analyze'
     if args.verify:
@@ -125,11 +129,9 @@ for data_path in target_list:
     thread.start()
     timestamped_print("Heartbeat thread started. Main thread continues...")
 
-    data = load_from_disk(os.path.join(args.data_path, folder_name))
-    timestamped_print(data)
-    data_new = data.to_list()
-
-    sample = deepcopy(data_new)[0]
+    with open(os.path.join(args.data_path, folder_name, 'sample.json'), 'r') as f:
+        data_new = json.load(f)
+    sample = deepcopy(data_new)
     data_input = sample['steps']
     data_input[0] = sample['problem'] + '\n' + data_input[0]
     if data_input and data_input[-1] == '':
@@ -143,11 +145,11 @@ for data_path in target_list:
     else:
         message = {
             'conversation': [
-                {'role': 'system', 'content': 'You are a math teacher. Your task is to review and critique the paragraphs in solution directly. Output your judgement in the format of `boxed{Yes}` if the paragraph is correct, or `boxed{No}` if the paragraph is incorrect.'}
+                {'role': 'system', 'content': 'You are a math teacher. Your task is to review and critique the paragraphs in solution directly. Output your judgement in the format of `\\boxed{Yes}` if the paragraph is correct, or `\\boxed{No}` if the paragraph is incorrect.'}
             ]
         }
     for j1 in range(len(data_input)):
-        line = {'content': data_input[j1], 'role': 'user'}
+        line = {'role': 'user', 'content': data_input[j1]}
         message['conversation'].append(line)
         line = {'content': '', 'role': 'assistant'}
         message['conversation'].append(line)
@@ -192,12 +194,13 @@ for data_path in target_list:
             step_scores.append(reward)
 
         end = time.perf_counter()
-        data_new[0]['time'] = end - start
-        data_new[0]['value'] = step_scores
-        data_new[0]['conversation'] = conversation
+        data_new['time'] = end - start
+        data_new['value'] = step_scores
+        data_new['conversation'] = conversation
+
         timestamped_print(type(data_new))
-        timestamped_print(type(Dataset.from_list(data_new)))
-        (Dataset.from_list(data_new)).save_to_disk(save_path)
+        with open(os.path.join(save_path, f'result_{args.idd}.json'), 'w') as f:
+            json.dump(data_new, f, indent=4)
         timestamped_print(f"dataset has been saved to: {save_path}")
     except Exception as e:
         traceback.print_exc()

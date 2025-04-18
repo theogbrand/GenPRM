@@ -8,9 +8,10 @@ python utils/split_dataset.py \
     --split_dir _data/split_input/ProcessBench
 """
 
-from datasets import load_dataset, Dataset
 import argparse
+import json
 import os
+from datasets import load_dataset, Dataset
 
 
 def export_all_splits(dataset_name, root_output_dir):
@@ -43,17 +44,11 @@ def process_split(dataset, split_name, root_output_dir):
     for idx, example in enumerate(dataset):
         example_dir = os.path.join(
             split_dir,
-            f"{split_name}_example_{idx:05d}"
+            f"{split_name}_{idx:03d}"
         )
-        create_single_example_dataset(example, dataset.info, example_dir)
-
-
-def create_single_example_dataset(example, info, output_dir):
-    """Create self-contained dataset for one example"""
-    os.makedirs(output_dir, exist_ok=True)
-    single_ds = Dataset.from_list([example])
-    # single_ds.info = info
-    single_ds.save_to_disk(output_dir)
+        os.makedirs(example_dir, exist_ok=True)
+        with open(os.path.join(example_dir, "sample.json"), "w") as f:
+            json.dump(example, f, ensure_ascii=False, indent=4)
 
 
 if __name__ == "__main__":

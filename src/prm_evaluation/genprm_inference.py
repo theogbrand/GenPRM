@@ -65,10 +65,14 @@ class CodeExecutor:
 
 
 class GenPRM:
-    def __init__(self, model_path):
+    def __init__(self, model_path, tensor_parallel_size):
         # Load the model and tokenizer
         timestamped_print(f"Loading model from {model_path}", level="INFO")
-        self.model = LLM(model=model_path, gpu_memory_utilization=0.90, enable_chunked_prefill=True)
+        self.model = LLM(
+            model=model_path,
+            tensor_parallel_size=tensor_parallel_size,
+            enable_chunked_prefill=True
+        )
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         timestamped_print(f"GenPRM loaded successfully", level="INFO")
 
@@ -301,16 +305,16 @@ class GenPRM:
             cur_time += 1
             new_prompts = []
             if output2.text.endswith('</output>\n'):
-                output2.text = cur_prompt + output2.text
+                output2.text = cur_prompts[0] + output2.text
                 out_nodes.append(output2)
             else:
                 if execute:
                     # execute the code
-                    code_output = code_executor.execute(cur_prompt + output2.text)
+                    code_output = code_executor.execute(cur_prompts[0] + output2.text)
                     code_content = f"[Code Output]\n\n```\n{code_output}\n```\n"
-                    new_prompts.append(cur_prompt + output2.text + code_content)
+                    new_prompts.append(cur_prompts[0] + output2.text + code_content)
                 else:
-                    new_prompts.append(cur_prompt + output2.text + '[Code Output]\n\n```\n')
+                    new_prompts.append(cur_prompts[0] + output2.text + '[Code Output]\n\n```\n')
 
             cur_prompts = new_prompts
 
