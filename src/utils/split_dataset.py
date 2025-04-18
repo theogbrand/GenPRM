@@ -52,7 +52,7 @@ def create_single_example_dataset(example, info, output_dir):
     """Create self-contained dataset for one example"""
     os.makedirs(output_dir, exist_ok=True)
     single_ds = Dataset.from_list([example])
-    single_ds.info = info
+    # single_ds.info = info
     single_ds.save_to_disk(output_dir)
 
 
@@ -64,5 +64,5 @@ if __name__ == "__main__":
 
     export_all_splits(
         dataset_name=args.dataset,
-        root_output_dir=args.output
+        root_output_dir=args.split_dir
     )
