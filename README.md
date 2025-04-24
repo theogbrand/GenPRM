@@ -140,6 +140,18 @@ bash reward_generation/mt_score_generate.sh \
     --loop 1
 ```
 
+Generate reasoning data
+
+```bash
+# example of math
+python rationale_generation/process.py \
+    --model_path "Qwen/QwQ-32B" \
+    --data_path _output/monte_carlo_processed/math_train_Qwen2.5-Math-7B-Instruct_monte_carlo \
+    --save_path _output/reasoning_output/math_train_QwQ_reasoning \
+    --num_gpu_per 1 \
+    --majority_of_N 1
+```
+
 ### Critique-refinement
 
 Execute policy refinement based on GenPRM's split output
