@@ -129,7 +129,7 @@ Generate monte carlo scores
 
 ```bash
 # example of math
-reward_generation/mt_score_generate.sh \
+bash reward_generation/mt_score_generate.sh \
     --LM models--Qwen--Qwen2.5-Math-7B-Instruct \
     --ORIGIN models--Qwen--Qwen2.5-7B-Instruct \
     --round 0 \
