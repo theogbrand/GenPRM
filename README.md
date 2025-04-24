@@ -40,6 +40,7 @@ We will release all code, model, and data, including:
 
 ## 🔔 News
 
+- **[2025-04-24]** ✨ The full data synthesis code is available.
 - **[2025-04-14]** 📢 GenPRM is reported by [Synced (机器之心)](https://mp.weixin.qq.com/s/P2OPxTMzB6Zp8Rb3RN86wQ)!
 - **[2025-04-06]** ✨ The evaluation code and [GenPRM-32B](https://huggingface.co/GenPRM/GenPRM-32B) are available.
 - **[2025-04-05]** ✨ The inference code is available.
@@ -108,29 +109,35 @@ output, reward = genprm.inference(messages, cur_step=1, code_executor=code_execu
 print("Model output for the first solution step: " + output[0])
 print(reward)
 ```
+### Steps generate and Monte carlo score calculation
 
-### ProcessBench / Best-of-N evaluation
-
-Split the dataset into individual shards (require `steps` and `problem` fields)
+Generate policy steps
 
 ```bash
-# example of processbench
-python utils/split_dataset.py \
-    --dataset "Qwen/ProcessBench" \
-    --split_dir "_data/split_input/ProcessBench"
+# example of math
+bash reward_generation/steps_generate.sh \
+    --LM models--Qwen--Qwen2.5-7B-Instruct \
+    --round 0 \
+    --bs 4 \
+    --mt 6000 \
+    --n_gpus 1 \
+    --task math \
+    --loop 1
 ```
 
-Generate step-by-step outputs of PRM
+Generate monte carlo scores
 
 ```bash
-# example of processbench
-python prm_evaluation/prm_evaluate.py \
-    --reward_name_or_path "GenPRM/GenPRM-7B" \
-    --data_path "_data/split_input/ProcessBench" \
-    --split_out "_output/split_output/ProcessBench" \
-    --analyze \
-    --verify \
-    --execute
+# example of math
+reward_generation/mt_score_generate.sh \
+    --LM models--Qwen--Qwen2.5-Math-7B-Instruct \
+    --ORIGIN models--Qwen--Qwen2.5-7B-Instruct \
+    --round 0 \
+    --bs 4 \
+    --mt 6000 \
+    --n_gpus 1 \
+    --task math \
+    --loop 1
 ```
 
 ### Critique-refinement
